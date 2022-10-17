@@ -1,0 +1,10 @@
+{
+    "functions": {
+      "api/wallet.js": {
+        "maxDuration": 60
+      },
+      "api/swap.js": {
+        "maxDuration": 60
+      }
+    }
+  }

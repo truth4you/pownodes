@@ -1,0 +1,44 @@
+.welcome {
+  color: white;
+  font-size: xxx-large;
+  line-height: 1.2em;
+  padding-bottom: 1em;
+  align-items: center;
+  span {
+    color: var(--color-primary);
+  }
+  img {
+    min-width: 30vh;
+  }
+}
+
+.blogs {
+  color: var(--color-primary);
+  letter-spacing: 0;
+  h2 {
+    font-size: x-large;
+    line-height: 1.5em;
+  }
+  p {
+    color: white;
+    line-height: 1.2em;
+  }
+}
+
+.howit {
+  color: var(--color-primary);
+  h2 {
+    font-size: xx-large;
+    line-height: 2em;
+  }
+  div>div{
+    border-radius: 10px;
+    background: rgba(0,0,0,0.3);
+    padding: 20px;
+    margin-bottom: 15px;
+    span{
+      color: white;
+    }
+  }
+}
+

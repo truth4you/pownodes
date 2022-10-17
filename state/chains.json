@@ -1,0 +1,26 @@
+{
+    "97": {
+        "name": "Binance",
+        "icon": "bsc",
+        "symbol": "BNB",
+        "decimals": 18,
+        "url": "https://data-seed-prebsc-1-s1.binance.org:8545/",
+        "coin": "binancecoin"
+    },
+    "43113": {
+        "name": "Avalanche",
+        "icon": "avx",
+        "symbol": "AVAX",
+        "decimals": 18,
+        "url": "https://api.avax-test.network/ext/bc/C/rpc",
+        "coin": "avalanche-2"
+    },
+    "4002": {
+        "name": "Fantom",
+        "icon": "ftm",
+        "symbol": "FTM",
+        "decimals": 18,
+        "url": "https://rpc.testnet.fantom.network/",
+        "coin": "fantom"
+    }
+}

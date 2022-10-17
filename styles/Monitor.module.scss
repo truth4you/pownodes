@@ -1,0 +1,248 @@
+.unpaid {
+  border: 1px solid var(--color-primary);
+  border-radius: 1em;
+  padding: 3em 2em;
+  margin-top: 2em;
+  h1 {
+    color: var(--color-primary);
+    font-size: xx-large;
+    margin-bottom: 1em;
+    text-transform: capitalize;
+    line-height: 30px;
+  }
+  table {
+    line-height: 1.5em;
+    width: 100%;
+    border:1px solid var(--color-secondary);    
+    thead {
+      color: var(--color-primary);
+      th {
+        line-height: 2.5em;
+        border-bottom:1px solid var(--color-secondary);
+        font-weight: normal;
+        &:first-child {
+          padding-left: 1em;
+        }
+        &:last-child {
+          padding-right: 1em;
+        }
+      }
+    }
+    tbody {
+      td {
+        color: white;
+        line-height: 2em;
+        border-bottom:1px dotted var(--color-secondary);
+        text-align: center;
+        padding: 2px 4px;
+        &:first-child {
+          padding-left: 1em;
+        }
+        &:last-child {
+          padding-right: 1em;
+        }
+      }
+    }
+  }
+  input {
+    border-radius: 2em;
+    padding: 0 1.2em;
+    &:not([type='checkbox']) {
+      height: 100%;
+    }
+    border: 1px solid var(--color-primary);
+    background-color: transparent;
+    color: white;
+    -moz-appearance:textfield;
+    &::placeholder {
+      color: var(--color-primary);
+      opacity: 0.5;
+      font-size: 0.8em;
+    }
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  }
+  button {
+    font-weight: bold;
+    font-family: 'Manrope';
+    background: #44F1A680;
+    padding: 0.4em 2em;
+    color: white;
+    border-radius: 2em;
+    text-transform: capitalize;
+    &:not(.active,:disabled):hover {
+      background: #44F1A6;
+      color: rgb(255,255,255,0.8)
+    }
+    &.active {
+      background-color: rgb(199, 113, 0);
+    }
+    &.danger {
+      background-color: darkred;
+      &:not(:disabled):hover {
+        background-color: rgb(182, 13, 13);
+      }
+    }
+    &:disabled {
+      opacity: 0.5;
+    }
+  }
+  .group * {
+    &:not(:first-child) {
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
+    }
+    &:not(:last-child) {
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px;
+    }
+  }
+}
+
+.mint {
+  border: 1px solid var(--color-primary);
+  border-radius: 1em;
+  padding: 3em 2em;
+  margin-top: 2em;
+  h1 {
+    color: var(--color-primary);
+    font-size: xx-large;
+    margin-bottom: 1em;
+    text-transform: capitalize;
+    line-height: 30px;
+  }
+  .textarea {
+    position: relative;
+    &:empty::before {
+      position: absolute;
+      content: 'Addresses to fund';
+      color: var(--color-primary);
+      opacity: 0.5;
+      font-size: 0.8em;
+      z-index: -1;
+    }
+    border-radius: 2em;
+    padding: 0.7em 1.2em;
+    border: 1px solid var(--color-primary);
+    background-color: transparent;
+    color: white;
+    * {
+      color: white !important;
+    }
+  }
+  select, input {
+    border-radius: 2em;
+    padding: 0.7em 1.2em;
+    border: 1px solid var(--color-primary);
+    background-color: transparent;
+    color: white;
+    text-transform: capitalize;
+    option {
+      color: black;
+    }
+    -moz-appearance:textfield;
+    &::placeholder {
+      color: var(--color-primary);
+      opacity: 0.5;
+      font-size: 0.8em;
+    }
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  }
+  button {
+    cursor: pointer;
+    font-weight: bold;
+    font-family: 'Manrope';
+    background: #44F1A680;
+    padding: 0.8em 2em;
+    color: white;
+    border-radius: 2em;
+    &:not([disabled]):hover {
+      background: #44F1A6;
+      color: black;
+    }
+    &[disabled] {
+      opacity: 0.3;
+    }
+    &.approved {
+      background-color: rgb(199, 113, 0);
+    }
+  }
+}
+
+.bridge {
+  border: 1px solid var(--color-primary);
+  border-radius: 1em;
+  padding: 3em 2em;
+  margin-top: 2em;
+  h1 {
+    color: var(--color-primary);
+    font-size: xx-large;
+    margin-bottom: 1em;
+    text-transform: capitalize;
+    line-height: 30px;
+  }
+  .textarea {
+    position: relative;
+    &:empty::before {
+      position: absolute;
+      content: 'Addresses to fund';
+      color: var(--color-primary);
+      opacity: 0.5;
+      font-size: 0.8em;
+      z-index: -1;
+    }
+    border-radius: 2em;
+    padding: 0.7em 1.2em;
+    border: 1px solid var(--color-primary);
+    background-color: transparent;
+    color: white;
+    * {
+      color: white !important;
+    }
+  }
+  input {
+    border-radius: 2em;
+    padding: 0.7em 1.2em;
+    border: 1px solid var(--color-primary);
+    background-color: transparent;
+    color: white;
+    text-transform: capitalize;
+    -moz-appearance:textfield;
+    &::placeholder {
+      color: var(--color-primary);
+      opacity: 0.5;
+      font-size: 0.8em;
+    }
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  }
+  button {
+    cursor: pointer;
+    font-weight: bold;
+    font-family: 'Manrope';
+    background: #44F1A680;
+    padding: 0.8em 2em;
+    color: white;
+    border-radius: 2em;
+    &:not([disabled]):hover {
+      background: #44F1A6;
+      color: black;
+    }
+    &[disabled] {
+      opacity: 0.3;
+    }
+    &.approved {
+      background-color: rgb(199, 113, 0);
+    }
+  }
+}

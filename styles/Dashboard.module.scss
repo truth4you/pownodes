@@ -1,0 +1,333 @@
+.welcome {
+  color: white;
+  h1 {
+    color: var(--color-primary);
+    font-size: xx-large;
+    padding-bottom: 1em;
+  }
+}
+
+.status {
+  ul {
+    border: 1px solid var(--color-primary);
+    color: var(--color-primary);
+    border-radius: 1em;
+    padding: 1em;
+    padding-left: 2em;
+    list-style-type: "\203B";
+    line-height: 2em;
+    li {
+      em {
+        font-style: normal;
+        font-size: 0.8em;
+        text-transform: capitalize;
+      }
+    }
+    ins {
+      margin-left: -1em;
+      text-align: center;
+      color: white;
+      text-decoration: none;
+      button {
+        font-weight: bold;
+        font-family: 'Manrope';
+        background: #44F1A680;
+        padding: 0.5em 2em;
+        color: white;
+        border-radius: 0.5em;
+        &:not([disabled]):hover {
+          background: #44F1A6;
+          color: black;
+        }
+      }
+    }
+  }
+}
+
+.create {
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+  border-radius: 1em;
+  padding: 3em 2em;
+  h1 {
+    font-size: xx-large;
+    padding-bottom: 1em;
+  }
+  p {
+    color: white;
+    line-height: 2em;
+  }
+  a {
+    text-align: center;
+    border: 1px solid var(--color-primary);
+    border-radius: 1em;
+    padding: 1.5em 0.5em;
+    line-height: 2em;
+    cursor: pointer;
+    &:not(.selected):hover {
+      opacity: 0.65;
+    }
+    &::before {
+      content: "";
+      background-repeat: no-repeat;
+      background-position: center;
+      height: 143px;
+      display: block;
+      margin-bottom: 2em;
+    }    
+    h2 {
+      font-size: x-large;
+      text-transform: uppercase;
+    }
+    p {
+      letter-spacing: 0;
+      font-size: 0.8em;
+    }    
+    &.selected {
+      h2 {
+        color: white;
+      }
+      p {
+        color: var(--color-primary);
+      }
+    }
+  }
+  .active {
+    padding-left: 1em;
+    margin-top: 4em;
+    label {
+      text-transform: uppercase;
+      color: white;
+    }
+  }
+  input {
+    border-radius: 2em;
+    padding: 0.7em 1.2em;
+    border: 1px solid var(--color-primary);
+    background-color: transparent;
+    color: white;
+    -moz-appearance:textfield;
+    &::placeholder {
+      color: var(--color-primary);
+      opacity: 0.5;
+      font-size: 0.8em;
+    }
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  }
+  .edit {
+    padding-top: 1em;
+    align-items: center; 
+    span {
+      color: white;
+      font-size: 0.8em;
+      line-height: 2em;
+    }
+  }
+  button {
+    // margin-bottom: 10px;
+    font-weight: bold;
+    font-family: 'Manrope';
+    background: #44F1A680;
+    padding: 0.8em 2em;
+    color: white;
+    border-radius: 2em;
+    &:not([disabled]):hover {
+      background: #44F1A6;
+      color: black;
+    }
+    &:not(.approved)[disabled] {
+      opacity: 0.3;
+    }
+    &.approved {
+      background-color: rgb(199, 113, 0);
+    }
+  }
+  .group * {
+
+    &:not(:first-child) {
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
+    }
+    &:not(:last-child) {
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px;
+    }
+  }
+  hr {
+    border-color: #44F1A680;
+  }
+  .upgrade {
+    align-items: center;
+    button {
+      // font-size: calc(10px + .3vw);
+      padding: 0.8em;
+      // white-space: nowrap;      
+    }
+    h2 {
+      color: white;
+      font-size: large;
+      margin-bottom: 1em;
+    }
+    p {
+      color: var(--color-primary);
+      font-size: 0.8em;
+    }
+    input {
+      border-radius: 2em;
+      padding: 0.7em 1.2em;
+      border: 1px solid var(--color-primary);
+      background-color: transparent;
+      color: white;
+      -moz-appearance:textfield;
+      &::placeholder {
+        color: var(--color-primary);
+        opacity: 0.5;
+        font-size: 0.8em;
+      }
+      &::-webkit-outer-spin-button,
+      &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+    }
+  }
+  .buy {
+    align-items: center;
+    button {
+      white-space: nowrap;
+    }
+    h2 {
+      color: white;
+      font-size: large;
+      margin-bottom: 1em;
+    }
+    p {
+      color: var(--color-primary);
+      font-size: 0.8em;
+    }
+    a {
+      white-space: nowrap;
+      font-weight: bold;
+      font-family: 'Manrope';
+      background: #44F1A680;
+      padding: 0.8em 2em;
+      color: white;
+      border-radius: 2em;
+      line-height: 1.2em;
+      &:hover {
+        background: #44F1A6;
+        color: black;
+        opacity: 1;
+      }
+      border: none;
+      &::before {
+        display: none;
+      }
+    }
+  }
+}
+
+.nodes {
+  border: 1px solid var(--color-primary);
+  border-radius: 1em;
+  padding: 3em 2em;
+  color: white;
+  h1 {
+    color: var(--color-primary);
+    font-size: xx-large;
+  }
+  table {
+    line-height: 1.5em;
+    width: 100%;
+    border:1px solid var(--color-secondary);    
+    thead {
+      color: var(--color-primary);
+      th {
+        line-height: 2.5em;
+        font-weight: normal;
+        border-bottom:1px solid var(--color-secondary);
+      }
+    }
+    tbody {
+      td {
+        line-height: 2em;
+        border-bottom:1px dotted var(--color-secondary);
+        text-align: center;
+      }
+    }
+  }
+  button {
+    // font-size: calc(10px + .5vw);
+    font-weight: bold;
+    font-family: 'Manrope';
+    background: #44F1A680;
+    padding: 0.4em 1em;
+    color: white;
+    border-radius: 2em;
+    text-transform: capitalize;
+    &:not(.selected):hover {
+      background: #44F1A6;
+      color: black;
+    }
+    &.selected {
+      background-color: rgb(199, 113, 0);
+    }    
+  }
+  .group * {
+    &:not(:first-child) {
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
+    }
+    &:not(:last-child) {
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px;
+    }    
+  }
+  .pay button {
+    padding: 0.7em 2em;
+  }
+}
+
+.rules {
+  border: 1px solid var(--color-primary);
+  border-radius: 1em;
+  padding: 3em 2em;
+  color: white;
+  h1 {
+    color: var(--color-primary);
+    font-size: xx-large;
+    padding-bottom: 1em;
+    line-height: 33px;
+  }
+  p {
+    line-height: 1.5em;
+  }
+  hr {
+    border-color: #44F1A680;
+  }
+  .pay {
+    align-items: center;
+    button {
+      font-weight: bold;
+      font-family: 'Manrope';
+      background: #44F1A680;
+      padding: 0.8em 2em;
+      color: white;
+      border-radius: 2em;
+      &:not([disabled]):hover {
+        background: #44F1A6;
+        color: black;
+      }
+      &:not(.approved)[disabled] {
+        opacity: 0.3;
+      }
+      &.approved {
+        background-color: rgb(199, 113, 0);
+      }
+    }
+  }
+}
