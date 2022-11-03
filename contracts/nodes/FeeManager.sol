@@ -9,9 +9,10 @@ import '../common/IERC20.sol';
 import "@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 // import '@uniswap/v2-periphery/contracts/libraries/UniswapV2OracleLibrary.sol';
+import "./RouterLibrary.sol";
 import "hardhat/console.sol";
 
-interface INodeGrid {
+interface IToken {
   function operatorFee() external view returns(uint32);
   function getAmountOut(uint256) external view returns(uint256);
 }
@@ -65,6 +66,16 @@ contract FeeManager is Initializable {
     // setRateUpgradeFee("basic", "light", 1000);
     // setRateUpgradeFee("basic", "pro", 1500);
     // setRateUpgradeFee("light", "pro", 1000);
+  }
+
+  function ETH() public view returns (string memory) {
+    uint256 chainId;
+    assembly {
+        chainId := chainid()
+    }
+    if(chainId==4002) return 'FTM';
+    if(chainId==43113) return 'AVAX';
+    return 'ETH';
   }
 
   receive() external payable {}
@@ -238,10 +249,12 @@ contract FeeManager is Initializable {
     if(enabledTransferETH) {
       address[] memory path = new address[](2);
       path[0] = address(token);
-      path[1] = router.WETH();
+      path[1] = RouterLibrary.WETH(address(router),ETH());
       token.approve(address(router), amount);
 
       router.swapExactTokensForETHSupportingFeeOnTransferTokens(
+        // address(router),
+        // ETH(),
         amount,
         0,
         path,
@@ -274,7 +287,7 @@ contract FeeManager is Initializable {
     uint32 claimRate = claimFeeRate(to);
     if(claimRate>0) {
       uint256 fee = amount * claimRate / 10000;
-      uint256 feeOperator = fee * INodeGrid(address(token)).operatorFee() / 100;
+      uint256 feeOperator = fee * IToken(address(token)).operatorFee() / 100;
       transferFeeToOperator(feeOperator);
       if(fee > feeOperator)
         token.transfer(address(token), fee - feeOperator); // for liquidity
@@ -308,14 +321,14 @@ contract FeeManager is Initializable {
 
   function getAmountETH1(uint256 _amount) public view returns (uint256) {
     if(address(token)==address(0)) return 0;
-    return INodeGrid(address(token)).getAmountOut(_amount);
+    return IToken(address(token)).getAmountOut(_amount);
   }
 
   function getAmountETH2(uint256 _amount) public view returns (uint256) {
     if(address(router)==address(0)) return 0;
     address[] memory path = new address[](2);
     path[0] = address(token);
-    path[1] = router.WETH();
+    path[1] = RouterLibrary.WETH(address(router),ETH());
     uint256[] memory amountsOut = router.getAmountsOut(_amount, path);
     return amountsOut[1];
   }

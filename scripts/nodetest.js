@@ -11,7 +11,7 @@ const setBlockTime = async (date)=>{
 
 describe("NodeManager", ()=>{
   let owner, addr1, addr2, addrs;
-  let Token, NodeCore, NodeManager, FeeManager, Router;
+  let Token, NodeCore, NodeManager, FeeManager, Router, NFT;
 
   describe("Deploy", () => {
     it("Deploy", async () => {
@@ -31,6 +31,8 @@ describe("NodeManager", ()=>{
       FeeManager = await deployProxy("FeeManager")
       NodeCore = await deployProxy("NodeCore")
       NodeManager = await deployProxy("NodeManager", [NodeCore.address, FeeManager.address])
+      NFT = await deploy("BoostNFT")
+      await (await NodeCore.bindBooster(NFT.address)).wait()
       await (await NodeCore.setOperator(NodeManager.address)).wait();
 
       // await (await Token.setTreasury(addrTreasury)).wait();
@@ -52,58 +54,78 @@ describe("NodeManager", ()=>{
       await (await FeeManager.bindToken(Token.address)).wait()  
     })    
   })
+  
+  return
+  
+  describe("NFT", () => {
 
-  // describe(" NFTDeploy", () => {
-  //   it("Deploy", async () => {
-  //       [owner, addr1, addr2, ...addrs] = await ethers.getSigners();
-            
-  //       const BoostNFT = await ethers.getContractFactory("BoostNFT");
-  //       NFT = await BoostNFT.deploy();
-  //       await NFT.deployed();
-  //       console.log("NFT", NFT.address)
-  //   })
-  //   it("set NFT address on NodeManager contract", async () => {
-  //     await(await NodeManager.setNFTAddress(NFT.address)).wait()
-  //   })
+    // it("set NFT address on NodeManager contract", async () => {
+    //   await(await NodeManager.setNFTAddress(NFT.address)).wait()
+    // })
+    it("mint NFT", async () => {
+      setBlockTime("2022-12-01")
+      await(await NFT.connect(addr1).mint(5, {value:ethers.utils.parseEther("25")})).wait()
+      await(await NFT.connect(addr2).mint(3, {value:ethers.utils.parseEther("15")})).wait()
+      console.log(addr1.address, ethers.utils.formatEther(await NFT.lastMultiplier(addr1.address)))
+      console.log(addr1.address, ethers.utils.formatEther(await NFT.lastMultiplier(addr2.address)))
+
+      setBlockTime("2022-12-02")
+      await(await NFT.connect(addr2).transferFrom(addr2.address, addr1.address, 5)).wait()
+      console.log(addr1.address, ethers.utils.formatEther(await NFT.lastMultiplier(addr1.address)))
+      console.log(addr1.address, ethers.utils.formatEther(await NFT.lastMultiplier(addr2.address)))
+
+      await showMultiplier("2022-12-01", "2022-12-25")
+
+      console.log(await NFT.tokensOf(addr1.address))
+    })
+
+    const showMultiplier = async (from, to) => {
+      setBlockTime(to)
+      console.log(addr1.address, `${from} ~ ${to}`, ethers.utils.formatEther(await NFT.getMultiplier(addr1.address, toTimestamp(from), toTimestamp(to))))
+      console.log(addr2.address, `${from} ~ ${to}`, ethers.utils.formatEther(await NFT.getMultiplier(addr2.address, toTimestamp(from), toTimestamp(to))))
+    }
+
+    return
      
-  //   it("send NFT1", async () => {
-  //       setBlockTime("2022-03-05")
-  //       await(await NFT.setApprovalForAll(addr1.address, true)).wait()
-  //       await(await NFT.safeTransferFrom(owner.address, addr1.address, 0, 1,[])).wait()
-  //   })
-  //   it("send NFT2", async () => {
-  //       setBlockTime("2022-03-08")
-  //       // await(await NFT.connect(addr1).safeTransferFrom(addr1.address, addr2.address, 0, 1,[])).wait()
-  //       await(await NFT.setApprovalForAll(addrs[3].address, true)).wait()
-  //       // await(await NFT.safeTransferFrom(owner.address, addrs[3].address, 2, 1,[])).wait()
-  //   })
-  //   it("send NFT3", async () => {
-  //       setBlockTime("2022-03-10")
-  //       await(await NFT.setApprovalForAll(addrs[2].address, true)).wait()
-  //       await(await NFT.safeTransferFrom(owner.address, addr2.address, 0, 1,[])).wait()
-  //       await(await NFT.setApprovalForAll(addrs[3].address, true)).wait()
-  //       await(await NFT.safeTransferFrom(owner.address, addrs[3].address, 1, 1,[])).wait()
-  //   })
-  //   it("send NFT4", async () => {
-  //       setBlockTime("2022-03-12")
-  //       await(await NFT.setApprovalForAll(addrs[2].address, true)).wait()
-  //       await(await NFT.safeTransferFrom(owner.address, addr2.address, 0, 1,[])).wait()
+    it("send NFT1", async () => {
+        setBlockTime("2022-12-05")
+        await(await NFT.setApprovalForAll(addr1.address, true)).wait()
+        await(await NFT.safeTransferFrom(owner.address, addr1.address, 0, 1,[])).wait()
+    })
+    it("send NFT2", async () => {
+        setBlockTime("2022-12-08")
+        // await(await NFT.connect(addr1).safeTransferFrom(addr1.address, addr2.address, 0, 1,[])).wait()
+        await(await NFT.setApprovalForAll(addrs[3].address, true)).wait()
+        // await(await NFT.safeTransferFrom(owner.address, addrs[3].address, 2, 1,[])).wait()
+    })
+    it("send NFT3", async () => {
+        setBlockTime("2022-12-10")
+        await(await NFT.setApprovalForAll(addrs[2].address, true)).wait()
+        await(await NFT.safeTransferFrom(owner.address, addr2.address, 0, 1,[])).wait()
+        await(await NFT.setApprovalForAll(addrs[3].address, true)).wait()
+        await(await NFT.safeTransferFrom(owner.address, addrs[3].address, 1, 1,[])).wait()
+    })
+    it("send NFT4", async () => {
+        setBlockTime("2022-12-12")
+        await(await NFT.setApprovalForAll(addrs[2].address, true)).wait()
+        await(await NFT.safeTransferFrom(owner.address, addr2.address, 0, 1,[])).wait()
         
-  //       await(await NFT.connect(addrs[3]).safeTransferFrom(addrs[3].address, addrs[2].address, 1, 1,[])).wait()
-  //   })
-  //   it("get Multiplier", async () => {
-  //       const multi1 = await NFT.getMultiplier(addr1.address, toTimestamp("2022-02-28"), toTimestamp("2022-03-20"))
-  //       console.log("1.1",ethers.utils.formatEther(multi1))
-  //       const multi11 = await NFT.getMultiplier(addr1.address, toTimestamp("2022-02-28"), toTimestamp("2022-03-13"))
-  //       const multi12 = await NFT.getLastMultiplier(addr1.address, toTimestamp("2022-03-13"));
-  //       console.log("1.2", multi11.toString(), multi12,(multi11*(toTimestamp("2022-03-13")-toTimestamp("2022-02-28"))+(toTimestamp("2022-03-20")-toTimestamp("2022-03-13"))*multi12)/(toTimestamp("2022-03-20")-toTimestamp("2022-02-28")))
-  //       const multi2 = await NFT.getMultiplier(addr2.address, toTimestamp("2022-02-28"), toTimestamp("2022-03-13"))
-  //       console.log("2",multi2/1000000000000000000)
-  //       const multi3 = await NFT.getMultiplier(addrs[3].address, toTimestamp("2022-02-28"), toTimestamp("2022-03-13"))
-  //       console.log("3", multi3/1000000000000000000)
-  //   })
-  // })
+        await(await NFT.connect(addrs[3]).safeTransferFrom(addrs[3].address, addrs[2].address, 1, 1,[])).wait()
+    })
+    it("get Multiplier", async () => {
+        const multi1 = await NFT.getMultiplier(addr1.address, toTimestamp("2022-02-28"), toTimestamp("2022-03-20"))
+        console.log("1.1",ethers.utils.formatEther(multi1))
+        const multi11 = await NFT.getMultiplier(addr1.address, toTimestamp("2022-02-28"), toTimestamp("2022-03-13"))
+        const multi12 = await NFT.getLastMultiplier(addr1.address, toTimestamp("2022-03-13"));
+        console.log("1.2", multi11.toString(), multi12,(multi11*(toTimestamp("2022-03-13")-toTimestamp("2022-02-28"))+(toTimestamp("2022-03-20")-toTimestamp("2022-03-13"))*multi12)/(toTimestamp("2022-03-20")-toTimestamp("2022-02-28")))
+        const multi2 = await NFT.getMultiplier(addr2.address, toTimestamp("2022-02-28"), toTimestamp("2022-03-13"))
+        console.log("2",multi2/1000000000000000000)
+        const multi3 = await NFT.getMultiplier(addrs[3].address, toTimestamp("2022-02-28"), toTimestamp("2022-03-13"))
+        console.log("3", multi3/1000000000000000000)
+    })
+  })
 
+  return
 
   // describe("Tier Action", () => {
   //   // it("add(new)", async ()=>{
@@ -211,7 +233,7 @@ describe("NodeManager", ()=>{
   })
   describe("Node Transfer", () => {
     it("transfer 1 from addr1 to addr2", async()=>{
-      await (await NodeManager.connect(addr1).transfer("default", 1, addr2.address)).wait()
+      await (await NodeManager.connect(addr1).transfer(addr2.address, [0])).wait()
       expect(await NodeManager.countOfUser(addr1.address)).to.equal(2)
       expect(await NodeManager.countOfUser(addr2.address)).to.equal(4)
       expect(await NodeManager.countTotal()).to.equal(6)

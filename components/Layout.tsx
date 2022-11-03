@@ -1,6 +1,7 @@
-import Header from "components/Header"; // Components: Header
-import Footer from "components/Footer"; // Components: Footer
-import type { ReactElement } from "react"; // Types
+import Header from "components/Header"
+import Sidebar from "components/Sidebar"
+import Footer from "components/Footer"
+import type { ReactElement } from "react"
 
 export default function Layout({
   children,
@@ -9,10 +10,9 @@ export default function Layout({
 }) {
   return (
     <>
-      <div className="container mx-auto px-4">
-        <Header />
-        <div>{children}</div>
-      </div>
+      <Sidebar />
+      <Header />
+      <div>{children}</div>
       <Footer />
     </>
   );

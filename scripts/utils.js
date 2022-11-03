@@ -3,15 +3,15 @@ const { getImplementationAddress } = require('@openzeppelin/upgrades-core');
 const fs = require('fs')
 
 const updateABI = async (contractName)=>{
-    // const abiDir = `${__dirname}/../abi`;
-    // if (!fs.existsSync(abiDir)) {
-    //     fs.mkdirSync(abiDir);
-    // }
-    // const Artifact = artifacts.readArtifactSync(contractName);
-    // fs.writeFileSync(
-    //     `${abiDir}/${contractName}.json`,
-    //     JSON.stringify(Artifact.abi, null, 2)
-    // )
+    const abiDir = `${__dirname}/../abi`;
+    if (!fs.existsSync(abiDir)) {
+        fs.mkdirSync(abiDir);
+    }
+    const Artifact = artifacts.readArtifactSync(contractName);
+    fs.writeFileSync(
+        `${abiDir}/${contractName}.json`,
+        JSON.stringify(Artifact.abi, null, 2)
+    )
 }
   
 const deploy = async (contractName, ...args)=>{
@@ -57,7 +57,6 @@ const getAt = async (contractName, contractAddress)=>{
 }
 
 const verify = async (contractAddress, args = []) => {
-    return false
     if(network=='localhost' || network=='hardhat') return false
     try {
         await hre.run("verify:verify", {

@@ -1,11 +1,35 @@
 {
-    "97": {
+    "31337": {
+        "name": "Hardhat",
+        "icon": "pow",
+        "symbol": "HAT",
+        "decimals": 18,
+        "url": "http://localhost:8545/",
+        "coin": "ethereum"
+    },
+    "8546": {
         "name": "Binance",
         "icon": "bsc",
         "symbol": "BNB",
         "decimals": 18,
-        "url": "https://data-seed-prebsc-1-s1.binance.org:8545/",
+        "url": "http://localhost:8546/",
         "coin": "binancecoin"
+    },
+    "8547": {
+        "name": "Avalanche",
+        "icon": "avx",
+        "symbol": "AVAX",
+        "decimals": 18,
+        "url": "http://localhost:8547/",
+        "coin": "avalanche-2"
+    },
+    "8548": {
+        "name": "Fantom",
+        "icon": "ftm",
+        "symbol": "FTM",
+        "decimals": 18,
+        "url": "http://localhost:8548/",
+        "coin": "fantom"
     },
     "43113": {
         "name": "Avalanche",
@@ -15,12 +39,12 @@
         "url": "https://api.avax-test.network/ext/bc/C/rpc",
         "coin": "avalanche-2"
     },
-    "4002": {
-        "name": "Fantom",
-        "icon": "ftm",
-        "symbol": "FTM",
+    "97": {
+        "name": "Binance",
+        "icon": "bsc",
+        "symbol": "BNB",
         "decimals": 18,
-        "url": "https://rpc.testnet.fantom.network/",
-        "coin": "fantom"
+        "url": "https://data-seed-prebsc-1-s1.binance.org:8545/",
+        "coin": "bnbbsc"
     }
 }

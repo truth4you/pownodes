@@ -2,13 +2,12 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
-import "./IBoostNFT.sol";
-import "./IFeeManager.sol";
+import '../common/IERC20.sol';
 import "./INodeCore.sol";
+import "./IBoostNFT.sol";
 // import "hardhat/console.sol";
 
 contract NodeCore is Initializable {
-  IFeeManager public feeManager;
   IBoostNFT public boostNFT;
 
   Tier[] private tierArr;
@@ -51,7 +50,7 @@ contract NodeCore is Initializable {
   function initialize() public initializer {
     owner = msg.sender;
 
-    addTier('default', 100 ether, 10 ether, 1 days, 0, 0);
+    addTier('default', 100 ether, 0.12 ether, 1 days, 0, 0);
 
     maxCountOfUser = 0; // 0-Infinite
     canNodeTransfer = true;
@@ -63,6 +62,10 @@ contract NodeCore is Initializable {
 
   function setOperator(address _operator) public onlyOwner {
     operator = _operator;
+  }
+
+  function bindBooster(address _boostNFT) public onlyOwner {
+    boostNFT = IBoostNFT(_boostNFT);
   }
 
   function tiers() public view returns (Tier[] memory) {
@@ -165,7 +168,7 @@ contract NodeCore is Initializable {
         * multiplier
         / 1 ether
         / tier.claimInterval;
-      update(node.id + 1, _account, uint32(block.timestamp), 0);
+      update(node.id, _account, uint32(block.timestamp), 0);
     }
     if(claimableAmount > 0) {
       rewardsOfUser[_account] += claimableAmount;
@@ -242,7 +245,7 @@ contract NodeCore is Initializable {
   }
 
   function hide(uint32 _id) public onlyOperator {
-    Node storage node = nodesTotal[_id - 1];
+    Node storage node = nodesTotal[_id];
     uint256[] storage nodeIndice = nodesOfUser[node.owner];
     for(uint32 i = 0;i<nodeIndice.length;i++) {
       if(nodeIndice[i]==node.id+1) {
@@ -258,7 +261,7 @@ contract NodeCore is Initializable {
     uint32 _claimedTime,
     uint32 _limitedTime
   ) public onlyOperator {
-    Node storage node = nodesTotal[_id - 1];
+    Node storage node = nodesTotal[_id];
     if(_claimedTime>0 && node.claimedTime!=_claimedTime) node.claimedTime = _claimedTime;
     if(_limitedTime>0 && node.limitedTime!=_limitedTime) node.limitedTime = _limitedTime;
     if(_account!=address(0) && node.owner!=_account) {
@@ -271,12 +274,12 @@ contract NodeCore is Initializable {
       countOfUser[_account]++;
       hide(_id);
       node.owner = _account;
-      nodesOfUser[_account].push(_id);
+      nodesOfUser[_account].push(_id + 1);
     }
   }
 
   function burn(uint32 _id) public onlyOperator {
-    Node storage node = nodesTotal[_id - 1];
+    Node storage node = nodesTotal[_id];
     hide(_id);
     Tier storage tier = tierArr[node.tierIndex];
     countOfUser[node.owner]--;
@@ -286,7 +289,7 @@ contract NodeCore is Initializable {
   }
 
   function select(uint32 _id) public view returns (Node memory) {
-    return nodesTotal[_id - 1];
+    return nodesTotal[_id];
   }
 
   function count() public view returns (uint32) {

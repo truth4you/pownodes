@@ -9,8 +9,6 @@ async function main() {
   let addrOperator = "0x388f90C29a5eb9214dBc58bbcF48cB83e45ef1eC"
   let addrOwner = "0x84cAE31E38Dc2f7932a725Da6daE87f732635974"
   let addrRouter = "0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3" //bsc
-  let addrBUSD = "0x78867BbEeF44f2326bF8DDd1941a4439382EF2A7" //bsc
-  let tokenPostfix = ""
   if(network.name=="avx-testnet") {
     addrRouter = "0x5db0735cf88F85E78ed742215090c465979B5006" //avx
     addrBUSD = "0x08a978a0399465621e667C49CD54CC874DC064Eb" //avx
@@ -23,65 +21,86 @@ async function main() {
   let balance = await owner.getBalance()
   console.log("Account balance:", ethers.utils.formatEther(balance))
 
-  const NodeGrid = await deployProxy(`NodeGrid${tokenPostfix}`)
-  const NFT = await deploy("BoostNFT")
-  const FeeManager = await deployProxy(`FeeManager${tokenPostfix}`)
-  const NodeManager = await deployProxy("NodeManager", [FeeManager.address, NFT.address])
-  const Multicall = await deploy("Multicall")
+  const deployed = false
+  const jsonFile = `${__dirname}/../../state/address-${network.config.chainId}.json`
+  const addresses = deployed ? require(jsonFile) : {}
 
-  await (await NodeGrid.transferOwnership(addrOwner)).wait()
-  console.log("NodeGrid.transferOwnership")
+  const Multicall = deployed ? await getAt("Multicall", addresses.CONTRACT_MULTICALL) : await deploy("Multicall")
+  const Token = deployed ? await getAt("PowToken", addresses.CONTRACT_POW) : await deployProxy("PowToken")
+  const FeeManager = deployed ? await getAt("FeeManager", addresses.CONTRACT_FEEMANAGER) : await deployProxy("FeeManager")
+  const NodeCore = deployed ? await getAt("NodeCore", addresses.CONTRACT_NODECORE) : await deployProxy("NodeCore")
+  const NodeManager = deployed ? await getAt("NodeManager", addresses.CONTRACT_NODEMANAGER) : await deployProxy("NodeManager", [NodeCore.address, FeeManager.address])
+
+  if(!deployed) {
+    addresses.CONTRACT_POW = Token.address
+    addresses.CONTRACT_NODEMANAGER = NodeManager.address
+    addresses.CONTRACT_FEEMANAGER = FeeManager.address
+    addresses.CONTRACT_NODECORE = NodeCore.address   
+    addresses.CONTRACT_MULTICALL = Multicall.address
+    
+    fs.writeFileSync(jsonFile, JSON.stringify(addresses))
+  }
+
+  await (await NodeCore.setOperator(NodeManager.address)).wait();
+
+  // await (await Token.setTreasury(addrTreasury)).wait();
+  await (await Token.setOperator(addrOperator)).wait();
+  await (await Token.setNodeManagerAddress(NodeManager.address)).wait()  
+  await (await Token.setExcludedFromFee(addrOwner)).wait()
+  await (await Token.setExcludedFromFee(FeeManager.address)).wait()
+  await (await Token.transferOwnership(addrOwner)).wait()
+  await (await Token.transfer(FeeManager.address, ethers.utils.parseEther("750000"))).wait()
+  
+  await (await FeeManager.bindManager(NodeManager.address)).wait()
+  await (await FeeManager.setTreasury(addrTreasury)).wait()
+  await (await FeeManager.setOperator(addrOperator)).wait()
+  
+  console.log("Token.transferOwnership")
   
   if(network.name=="avx-testnet") {
     const Router = await getAt("IJoeRouter02", addrRouter)
-    await (await NodeGrid.approve(Router.address, ethers.utils.parseEther("100000000"))).wait()
-    console.log("NodeGrid.approve")
-    await (await Router.addLiquidityAVAX(NodeGrid.address, ethers.utils.parseEther("70000") ,"0","0", owner.address, parseInt(new Date().getTime()/1000)+2000 ,{ value: ethers.utils.parseEther("0.5") })).wait()
+    await (await Token.approve(Router.address, ethers.utils.parseEther("100000000"))).wait()
+    console.log("Token.approve")
+    await (await Router.addLiquidityAVAX(Token.address, ethers.utils.parseEther("150000") ,"0","0", owner.address, parseInt(new Date().getTime()/1000)+2000 ,{ value: ethers.utils.parseEther("0.5") })).wait()
     console.log("Router.addLiquidityETH")
-    await (await NodeGrid.updateRouter(Router.address)).wait()
-    console.log("NodeGrid.updateRouter")
+    await (await Token.updateRouter(Router.address)).wait()
+    console.log("Token.updateRouter")
   } else {
     const Router = await getAt("PancakeRouter", addrRouter)
-    await (await NodeGrid.approve(Router.address, ethers.utils.parseEther("100000000"))).wait()
-    console.log("NodeGrid.approve")
-    await (await Router.addLiquidityETH(NodeGrid.address, ethers.utils.parseEther("70000") ,"0","0", owner.address, parseInt(new Date().getTime()/1000)+2000 ,{ value: ethers.utils.parseEther("0.5") })).wait()
+    await (await Token.approve(Router.address, ethers.utils.parseEther("100000000"))).wait()
+    console.log("Token.approve")
+    await (await Router.addLiquidityETH(Token.address, ethers.utils.parseEther("70000") ,"0","0", owner.address, parseInt(new Date().getTime()/1000)+2000 ,{ value: ethers.utils.parseEther("0.5") })).wait()
     console.log("Router.addLiquidityETH")
-    await (await NodeGrid.updateRouter(Router.address)).wait()
-    console.log("NodeGrid.updateRouter")
+    await (await Token.updateRouter(Router.address)).wait()
+    console.log("Token.updateRouter")
   }
 
-  const addresses = {
-    CONTRACT_NODEGRID: NodeGrid.address,
-    CONTRACT_NODEMANAGER: NodeManager.address,
-    CONTRACT_FEEMANAGER: FeeManager.address,
-    CONTRACT_BOOST: NFT.address,    
-    CONTRACT_MULTICALL: Multicall.address,    
-  }
+  await (await FeeManager.bindToken(Token.address)).wait()  
+
   
-  await (await NodeGrid.setNodeManagerAddress(NodeManager.address)).wait()  
-  console.log("NodeGrid.setNodeManagerAddress")
-  await (await NodeGrid.setExcludedFromFee(FeeManager.address)).wait()
-  console.log("NodeGrid.setExcludedFromFee")
-  await (await NodeGrid.setOperator(addrOperator)).wait()
-  console.log("NodeGrid.setOperator")
   
-  await (await NodeManager.setPayTokenAddress(addrBUSD)).wait()
-  console.log("NodeManager.setPayTokenAddress")
-  await (await NodeManager.bindFeeManager(FeeManager.address)).wait()
-  console.log("NodeManager.bindFeeManager")
-  await (await NodeManager.bindBoostNFT(NFT.address)).wait()
-  console.log("NodeManager.bindBoostNFT")
-  await (await NodeManager.setMinter(owner.address)).wait()
-  console.log("NodeGrid.setMinter")
+  // await (await Token.setNodeManagerAddress(NodeManager.address)).wait()  
+  // console.log("Token.setNodeManagerAddress")
+  // await (await Token.setExcludedFromFee(FeeManager.address)).wait()
+  // console.log("Token.setExcludedFromFee")
+  // await (await Token.setOperator(addrOperator)).wait()
+  // console.log("Token.setOperator")
   
-  await (await FeeManager.bindManager(NodeManager.address)).wait()
-  console.log("FeeManager.bindManager")
-  await (await FeeManager.bindToken(NodeGrid.address)).wait()  
-  console.log("FeeManager.bindToken")
-  await (await FeeManager.setTreasury(addrTreasury)).wait()
-  console.log("FeeManager.setTreasury")
-  await (await FeeManager.setOperator(addrOperator)).wait()
-  console.log("FeeManager.setOperator")
+  // await (await NodeManager.bindFeeManager(FeeManager.address)).wait()
+  // console.log("NodeManager.bindFeeManager")
+  // await (await NodeManager.bindBoostNFT(NFT.address)).wait()
+  // console.log("NodeManager.bindBoostNFT")
+  // await (await NodeManager.setMinter(owner.address)).wait()
+  // console.log("Token.setMinter")
+  
+  // await (await FeeManager.bindManager(NodeManager.address)).wait()
+  // console.log("FeeManager.bindManager")
+  // await (await FeeManager.bindToken(Token.address)).wait()  
+  // console.log("FeeManager.bindToken")
+  // await (await FeeManager.setTreasury(addrTreasury)).wait()
+  // console.log("FeeManager.setTreasury")
+  // await (await FeeManager.setOperator(addrOperator)).wait()
+  // console.log("FeeManager.setOperator")
   
   // await (await NodeManager.transferOwnership(addrOwner)).wait()
   // console.log("NodeManager.transferOwnership")
@@ -90,7 +109,7 @@ async function main() {
 
   balance = balance.sub(await owner.getBalance())
   console.log("Spent Gas:", ethers.utils.formatEther(balance))
-  fs.writeFileSync(`${__dirname}/../../state/address-${network.config.chainId}.json`, JSON.stringify(addresses))
+  
 }
 
 main()

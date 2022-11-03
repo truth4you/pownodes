@@ -1,223 +1,344 @@
-.welcome {
+span.digits {
+  position: relative;
+  color: transparent;
+  line-height: 1em;
+  font-weight: 800;
+  font-family: Caladea;
+  user-select: none;
+  &::after {
+    position: absolute;
+    left: 0;
+    content: attr(data-value);
+    width: 30rem;
+    background: -webkit-linear-gradient(0deg, #fff4d1 5%, #f5d28f 10%, #675537 30%, #67553780 50%);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+.panel {
+  background: rgba(31,101,152,0.5);
   color: white;
+  border-radius: 0.4em;
+  padding: 2em;
+  padding-top: 3em;
+  position: relative;
   h1 {
     color: var(--color-primary);
-    font-size: xx-large;
-    padding-bottom: 1em;
-    line-height: 32px;
+    font-size: large;
+    line-height: 1.2em;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-weight: 900;
+    &::first-letter {
+      font-size: 1.4em;
+    }
   }
-  line-height: 1.2em;
-  padding-bottom: 1em;
-  align-items: center;
-  span {
-    color: var(--color-primary);
+  h2 {
+    font-size: 4em;
+    position: relative;
+    height: 1em;
+    content: '0.0';
+  }
+  label {
+    position: absolute;
+    width: 30rem;
+    background: -webkit-linear-gradient(0deg, #fff4d1 5%, #f5d28f 10%, #675537 30%, #67553780 50%);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1em;
+    font-weight: 800;
+    font-family: Caladea;
   }
   button {
-    margin-right: 6px;
-    text-transform: capitalize;
     font-weight: bold;
     background: #44F1A680;
-    padding: 0.8em 2em !important;
+    padding: 0.8em 2em;
     color: white;
-    border-radius: 2em;
+    border-radius: 0.4em;
+    text-transform: uppercase;
     &:not([disabled]):hover {
       background: #44F1A6;
       color: black;
     }
+    &:not(.approved)[disabled] {
+      opacity: 0.3;
+    }
+    &.approved {
+      background-color: rgb(199, 113, 0);
+    }
+    em {
+      font-size: 0.8em;
+      font-weight: 400;
+      text-transform: none;
+    }
+  }
+  .comic {
+    position: absolute;
   }
 }
 
-.teamMember {
-  border-radius: 50%;
-  border: 4px var(--color-primary) solid !important;
+@keyframes eye-blink {
+  0% { opacity: 0 }
+  95% { opacity: 0 }
+  96% { opacity: 1 }
 }
 
-
-.teamName {
-  background-color: var(--color-primary);
-  color: #fff;
-  padding: 13px;
-  padding-bottom: 8px;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  z-index: 1000;
-  text-align: center;
-  margin-bottom: 0;
-}
-
-.teamRole {
-  padding: 0 15px;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
-  background-color: #333;
-
-  margin-bottom: 0px;
-  color: #ddd;
-  font-size: 16px;
-  line-height: 36px;
-  font-weight: 400;
-
-  text-align: center;
-
-  z-index: 1000;
-
-  margin-bottom: 15px;
-}
-
-
-
-.buttonsContainer {
-  margin-top: 20px;
-  display: flex;
-  justify-content: flex-end;
-
-  > button {
-    margin-right: 6px;
-
-    font-weight: bold;
-    background: #44F1A680;
-    padding: 0.8em 2em !important;
-    color: white;
-    border-radius: 2em;
+.rewards {
+  min-height: 250px;
+  background-image: url(/comic-rewards.png);
+  background-repeat: no-repeat;
+  background-position: bottom -25px right 2em;
+  .canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    z-index: -1;
+    canvas {
+      background-color: transparent;
+    }
+  }
+  h2 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+  button {
+    margin-top: 2em;
+  }
+  .hand {
+    position: absolute;
+    width: 150px;
+    height: 27px;
+    background-image: url(/comic-rewards.png);
+    background-repeat: no-repeat;
+    background-position: bottom right 2em;
+    bottom: -25px;
+    right: 0;
+  }
+  .eyes {
+    position: absolute;
+    width: 36px;
+    height: 33px;
+    background-image: url(/comic-rewards-eye.png);
+    background-repeat: no-repeat;
+    bottom: 117px;
+    right: 123px;
+    animation: eye-blink 4s infinite;
   }
 }
 
-.button {
-  font-weight: bold;
-  background: #44F1A680;
-  padding: 0.8em 2em !important;
-  color: white;
-  border-radius: 2em;
-}
-
-.buttonLeft {
-  border-top-right-radius: 0.4em !important;
-  border-bottom-right-radius: 0.4em !important;
-}
-.buttonMiddle {
-  border-radius: 0.4em !important;
-}
-.buttonRight {
-  border-top-left-radius: 0.4em !important;
-  border-bottom-left-radius: 0.4em !important;
-}
-
-.status {
-  ul {
-    border: 1px solid var(--color-primary);
-    color: var(--color-primary);
+.price {
+  min-height: 250px;
+  background-image: url(/comic-price.png);
+  background-repeat: no-repeat;
+  background-position: bottom left 2em;
+  h2 {
+    position: absolute;
+    bottom: 1rem;
+    right: 2rem;
+  }
+  h3 {
+    position: absolute;
+    bottom: 5rem;
+    right: 2rem;
+    font-size: 1.4rem;
+    border-radius: 0.5em;
+    padding: 0.2rem 1rem;
+    &.red {
+      background-color: darkred;
+    }
+    &.green {
+      background-color: darkgreen;
+    }
+  }
+  button {
+    margin-top: 2em;
+  }
+  .eyes1 {
+    position: absolute;
+    width: 41px;
+    height: 37px;
+    background-image: url(/comic-price-eye1.png);
+    background-repeat: no-repeat;
+    bottom: 91px;
+    left: calc(2em + 36px);
+    animation: eye-blink 3.4s infinite;
+  }
+  .eyes2 {
+    position: absolute;
+    width: 41px;
+    height: 37px;
+    background-image: url(/comic-price-eye2.png);
+    background-repeat: no-repeat;
+    bottom: 76px;
+    left: calc(2em + 211px);
+    animation: eye-blink 3.9s infinite;
+  }
+  .graph {
+    position: absolute;
+    left: 15em;
+    right: 2em;
+    top: 1em;
+    bottom: 7.5em;
+    background-color: #7773;
     border-radius: 1em;
-    padding: 1em;
-    padding-left: 2em;
-    list-style-type: "\203B";
-    line-height: 2em;
-    li {
-      padding-left: 1em;
-      em {
-        font-style: normal;
-        font-size: 0.8em;
-        text-transform: capitalize;
-      }
+    svg {
+      width: 100%;
+      height: 100%;
     }
-    ins {
-      margin-left: -1em;
-      text-align: center;
-      color: white;
-      text-decoration: none;
-      button {
-        font-weight: bold;
-        background: #44F1A680;
-        padding: 0.5em 2em;
-        color: white;
-        border-radius: 0.5em;
-        &:not([disabled]):hover {
-          background: #44F1A6;
-          color: black;
-        }
-      }
-    }
-  }
-}
-
-.upgradeUl {
-  list-style: circle;
-
-  li {
-    margin-bottom: 20px;
-    padding-left: 14px;
-    margin-left: 12px;
   }
 }
 
 .create {
-  border: 1px solid var(--color-primary);
-  color: var(--color-primary);
-  border-radius: 1em;
-  padding: 3em 2em;
-  h1 {
-    font-size: xx-large;
-    padding-bottom: 1em;
-    line-height: 1.2em;
+  min-height: 250px;
+  background-image: url(/comic-create.png);
+  background-repeat: no-repeat;
+  background-position: bottom right 2em;
+  .eyes {
+    position: absolute;
+    width: 22px;
+    height: 26px;
+    background-image: url(/comic-create-eye.png);
+    background-repeat: no-repeat;
+    bottom: 141px;
+    right: calc(2em + 47px);
+    animation: eye-blink 3.7s infinite;
   }
-  h2 {
-    color: #fff;
-    font-size: 1.5rem;
-    margin-top: 20px;
-    margin-bottom: 10px;
-  }
-  
-  p {
-    color: white;
-    line-height: 1.2em;
-  }
-  a {
-    text-align: center;
-    border: 1px solid var(--color-primary);
-    border-radius: 1em;
-    padding: 1.5em 0.5em;
-    line-height: 2em;
-    cursor: pointer;
-    
-    &:not(.selected):hover {
-      opacity: 0.65;
+  .count {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    > span {
+      font-size: 3em;
     }
-    &::before {
-      content: "";
-      background-repeat: no-repeat;
-      background-position: center;
-      height: 143px;
-      display: block;
-      margin-bottom: 2em;
-    }    
     h2 {
-      font-size: x-large;
-      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      background-color: #7773;
+      border-radius: 0.2em;
+      padding: 0 0.5em;
     }
-    p {
-      letter-spacing: 0;
-      font-size: 0.8em;
-    }    
-    &.selected {
-      h2 {
+  }
+  .info {
+    background-color: #7773;
+    border-radius: 0.5em;
+    padding: 0.2em 0.5em;
+    // color: #aaa;
+    // line-height: 1.5em;
+    // width: 50%;
+    font-size: 1.2em;
+    position: absolute;
+    top: 1rem;
+    right: 2rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 2em;
+    > span {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      font-size: 1.2em;
+      > span:first-child {
         color: white;
+        font-size: 0.6rem;
       }
-      p {
-        color: var(--color-primary);
+      em {
+        font-size: 0.6rem;
+        text-decoration: none;
       }
     }
   }
-  .active {
-    padding-left: 1em;
-    margin-top: 4em;
-    label {
-      text-transform: uppercase;
-      color: white;
+}
+
+.nodes {
+  min-height: 250px;
+  background-image: url(/comic-nodes.png);
+  background-repeat: no-repeat;
+  background-position: top 1em right 2em;
+  em {
+    font-size: 2rem;
+    font-style: normal;
+    padding: 0 0.5em;
+  }
+  .eyes {
+    position: absolute;
+    width: 22px;
+    height: 26px;
+    background-image: url(/comic-nodes-eye.png);
+    background-repeat: no-repeat;
+    top: calc(1em + 53px);
+    right: calc(2em + 88px);
+    animation: eye-blink 2.7s infinite;
+  }
+  .tableWrapper {
+    position: absolute;
+    top: calc(1em + 163px);
+    bottom: 6em;
+    right: 2em;
+    left: 2em;
+    overflow: auto;
+    border: 1px solid var(--color-secondary);    
+    &::after {
+      content: '';
+      background: red;
+      width: 100%;
+      height: 100px;
+      position: sticky;
+      top: 0;
     }
+    &::-webkit-scrollbar {
+      width: 6px;
+      background-color: transparent;
+    }
+    &::-webkit-scrollbar {
+      height: 6px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: var(--color-secondary);
+    }
+  }
+  table {
+    line-height: 1.5em;
+    width: 100%;
+    // border: 1px solid var(--color-secondary);    
+    thead {
+      color: var(--color-primary);
+      position: sticky;
+      top: 0;
+      th {
+        background: #134981;
+        line-height: 2.5em;
+        font-weight: normal;
+        border-bottom:1px solid var(--color-secondary);
+      }
+    }
+    tbody {
+      td {
+        line-height: 2em;
+        border-bottom:1px dotted var(--color-secondary);
+        text-align: center;
+      }
+      tr:last-child td {
+        border-bottom: none;
+      }
+    }
+  }
+  .footer {
+    position: absolute;
+    bottom: 2em;
+    left: 2em;
+    right: 2em;
   }
   input {
-    border-radius: 2em;
+    border-radius: 0.4em;
     padding: 0.7em 1.2em;
-    border: 1px solid var(--color-primary);
+    border: 1px solid var(--color-secondary);
+    outline: none;
     background-color: transparent;
     color: white;
     -moz-appearance:textfield;
@@ -232,252 +353,5 @@
       margin: 0;
     }
   }
-  .edit {
-    padding-top: 1em;
-    align-items: center; 
-    span {
-      color: white;
-      font-size: 0.8em;
-      line-height: 2em;
-    }
-  }
-  button {
-    // margin-bottom: 10px;
-    font-weight: bold;
-    background: #44F1A680;
-    padding: 0.8em 2em;
-    color: white;
-    border-radius: 2em;
-    &:not([disabled]):hover {
-      background: #44F1A6;
-      color: black;
-    }
-    &:not(.approved)[disabled] {
-      opacity: 0.3;
-    }
-    &.approved {
-      background-color: rgb(199, 113, 0);
-    }
-  }
-  .group * {
-
-    &:not(:first-child) {
-      border-top-left-radius: 5px;
-      border-bottom-left-radius: 5px;
-    }
-    &:not(:last-child) {
-      border-top-right-radius: 5px;
-      border-bottom-right-radius: 5px;
-    }
-  }
-  hr {
-    border-color: #44F1A680;
-  }
-  .upgrade {
-    align-items: center;
-    button {
-      // font-size: calc(10px + .3vw);
-      padding: 0.8em;
-      // white-space: nowrap;      
-    }
-    h2 {
-      color: white;
-      font-size: large;
-      margin-bottom: 1em;
-    }
-    p {
-      color: var(--color-primary);
-      font-size: 0.8em;
-    }
-    input {
-      border-radius: 2em;
-      padding: 0.7em 1.2em;
-      border: 1px solid var(--color-primary);
-      background-color: transparent;
-      color: white;
-      -moz-appearance:textfield;
-      &::placeholder {
-        color: var(--color-primary);
-        opacity: 0.5;
-        font-size: 0.8em;
-      }
-      &::-webkit-outer-spin-button,
-      &::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-      }
-    }
-  }
-  .swap {
-    h2 {
-      color: white;
-      font-size: large;
-      margin-bottom: 1em;
-    }
-    p {
-      color: var(--color-primary);
-      font-size: 0.8em;
-    }
-    button.selected {
-      background-color: rgb(199, 113, 0);
-    }
-    .arrow {
-      width: 24px;
-      height: 24px;
-      color: white;
-      line-height: 24px;
-    }
-  }
-  .buy {
-    align-items: center;
-    button {
-      white-space: nowrap;
-    }
-    h2 {
-      color: white;
-      font-size: large;
-      margin-bottom: 1em;
-    }
-    p {
-      color: var(--color-primary);
-      font-size: 0.8em;
-    }
-    a {
-      white-space: nowrap;
-      font-weight: bold;
-      background: #44F1A680;
-      padding: 0.8em 2em;
-      color: white;
-      border-radius: 2em;
-      line-height: 1.2em;
-      &:hover {
-        background: #44F1A6;
-        color: black;
-        opacity: 1;
-      }
-      border: none;
-      &::before {
-        display: none;
-      }
-    }
-  }
 }
 
-.nodes {
-  border: 1px solid var(--color-primary);
-  border-radius: 1em;
-  padding: 3em 2em;
-  color: white;
-  h1 {
-    color: var(--color-primary);
-    font-size: xx-large;
-  }
-  table {
-    line-height: 1.5em;
-    width: 100%;
-    border:1px solid var(--color-secondary);    
-    thead {
-      color: var(--color-primary);
-      th {
-        line-height: 2.5em;
-        font-weight: normal;
-        border-bottom:1px solid var(--color-secondary);
-      }
-    }
-    tbody {
-      td {
-        line-height: 2em;
-        border-bottom:1px dotted var(--color-secondary);
-        text-align: center;
-      }
-    }
-  }
-  button {
-    // font-size: calc(10px + .5vw);
-    font-weight: bold;
-    
-    background: #44F1A680;
-    &.small {
-      padding: 0.4em 1em;
-    }
-    padding: 0.8em 2em;
-    color: white;
-    border-radius: 2em;
-    text-transform: capitalize;
-    &:not(.selected):hover {
-      background: #44F1A6;
-      color: black;
-    }
-    &.selected {
-      background-color: rgb(199, 113, 0);
-    }
-  }
-  .group * {
-      &:not(:first-child) {
-        border-top-left-radius: 5px;
-        border-bottom-left-radius: 5px;
-      }
-      &:not(:last-child) {
-        border-top-right-radius: 5px;
-        border-bottom-right-radius: 5px;
-      }
-    }
-}
-
-.rules {
-  border: 1px solid var(--color-primary);
-  border-radius: 1em;
-  padding: 3em 2em;
-  color: white;
-  h1 {
-    color: var(--color-primary);
-    font-size: xx-large;
-    padding-bottom: 1em;
-    line-height: 33px;
-  }
-  p {
-    line-height: 1.5em;
-  }
-  hr {
-    border-color: #44F1A680;
-  }
-  .pay {
-    align-items: center;
-    button {
-      font-weight: bold;
-     
-      background: #44F1A680;
-      padding: 0.8em 2em;
-      color: white;
-      border-radius: 2em;
-      &:not([disabled]):hover {
-        background: #44F1A6;
-        color: black;
-      }
-      &:not(.approved)[disabled] {
-        opacity: 0.3;
-      }
-      &.approved {
-        background-color: rgb(199, 113, 0);
-      }
-    }
-  }
-}
-
-
-
-@media (min-width: 720px) {
-  .create {
-    a {
-      width: 30%;
-    }
-  }
-}
-
-
-
-@media (min-width: 1280px) {
-  .teamRole {
-    font-size: 18px
-  }
-}

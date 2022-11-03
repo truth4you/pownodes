@@ -60,6 +60,19 @@
     "inputs": [
       {
         "internalType": "address",
+        "name": "_boostNFT",
+        "type": "address"
+      }
+    ],
+    "name": "bindBooster",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
         "name": "",
         "type": "address"
       }
@@ -163,6 +176,62 @@
         "internalType": "address",
         "name": "_account",
         "type": "address"
+      },
+      {
+        "internalType": "bool",
+        "name": "_includeUnclaimed",
+        "type": "bool"
+      }
+    ],
+    "name": "claimable",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_account",
+        "type": "address"
+      }
+    ],
+    "name": "count",
+    "outputs": [
+      {
+        "internalType": "uint32",
+        "name": "",
+        "type": "uint32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "count",
+    "outputs": [
+      {
+        "internalType": "uint32",
+        "name": "",
+        "type": "uint32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "_tier",
+        "type": "string"
       }
     ],
     "name": "count",
@@ -270,19 +339,6 @@
         "internalType": "uint32",
         "name": "",
         "type": "uint32"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "feeManager",
-    "outputs": [
-      {
-        "internalType": "contract IFeeManager",
-        "name": "",
-        "type": "address"
       }
     ],
     "stateMutability": "view",

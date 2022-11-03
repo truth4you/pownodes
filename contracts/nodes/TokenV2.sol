@@ -172,7 +172,7 @@ contract PowToken is ERC20Upgradeable {
                     priceCumulative = RouterLibrary.price1CumulativeLast(pair);
                     (reserve0, reserve1) = (reserve1, reserve0);
                 }
-                if(priceTimestampLast==0)  {
+                if(priceTimestampLast==0) {
                     priceAverage = (reserve1 << 112) / reserve0;
                     priceCumulativeLast = priceCumulative;
                     priceTimestampLast = reserveTimestamp;

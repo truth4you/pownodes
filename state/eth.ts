@@ -29,7 +29,7 @@ function useEth() {
   const [address, setAddress] = useState<string | null>(null) // User address
   const [onboard, setOnboard] = useState<API | null>(null) // Onboard provider
   const [provider, setProvider] = useState<Web3Provider | null>(null) // Ethers provider
-  const [chainId, setChainId] = useState<number>(Number(Object.keys(chains)[0]))
+  const [chainId, setChainId] = useState<number>(Number(process.env.NEXT_PUBLIC_RPC_NETWORK))
   let lockFlag = false
 
   const unlock = async () => {
@@ -54,7 +54,7 @@ function useEth() {
     onboard?.walletReset()
   }
 
-  const switchChain = async (chain:number) => {
+  const switchChain = async (chain:number = Number(process.env.NEXT_PUBLIC_RPC_NETWORK)) => {
     lockFlag = true
     if(onboard && address) {
       const state = onboard.getState()
@@ -89,8 +89,8 @@ function useEth() {
       hideBranding: true,
       darkMode: true, 
       walletSelect: {
-        heading: `Connect to NodeGrid App`,
-        description: `Please select a wallet to authenticate with $NODEGRID.`,
+        heading: `Connect to PowNodes App`,
+        description: `Please select a wallet to authenticate with $POW.`,
         wallets: wallets,
       },
       subscriptions: {
@@ -111,13 +111,13 @@ function useEth() {
         },
         network: async (network) => {
           if(network && chainId!=network && !lockFlag) {
-            if(chains[network]==undefined)
-              lock()
-            else {
-              const state = onboard.getState()
-              setProvider(new ethers.providers.Web3Provider(state.wallet.provider))
-              setChainId(network)
-            }
+            // if(chains[network]==undefined)
+            //   lock()
+            // else {
+            const state = onboard.getState()
+            setProvider(new ethers.providers.Web3Provider(state.wallet.provider))
+            setChainId(network)
+            // }
           }
         }
       },

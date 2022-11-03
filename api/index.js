@@ -17,7 +17,7 @@ app.use(cors({
 }))
 app.use(bodyParser.json())
 app.get('/', (req, res) => {
-    res.send(`Welcome! NodeGrid Backend!`)
+    res.send(`Welcome! PowNodes Backend!`)
 })
 app.get('/wallet', async (req,res) => {
     const balances = {}

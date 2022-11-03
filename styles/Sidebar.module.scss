@@ -1,0 +1,43 @@
+.sidebar {
+    width: 285px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background: #448C89;
+    ul {
+        padding: 0 30px 0 42px;
+    }
+    h1 {
+        font-family: 'Cunia';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 20px;
+        line-height: 24px;
+        color: #B4D8CA;
+        padding-bottom: 11px;
+        border-bottom: 1px solid #63A69F;
+    }
+    li {
+        margin-top: 30px;
+        a {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'Poppins';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 18px;
+            line-height: 27px;
+            color: white;
+            justify-content: space-between;
+            text-align: left;
+            &:hover {
+                color: #befcf6;
+            }
+            span {
+                flex-grow: 1;
+            }
+        }
+    }
+}

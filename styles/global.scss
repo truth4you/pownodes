@@ -5,16 +5,9 @@
 @import url('https://fonts.googleapis.com/css?family=Manrope&display=swap');
 
 body {
-  background-color: #161616;
-  font-family: PT Mono;
-  font-size: 16px;
-  font-weight: 200;
-  line-height: 19px;
-  letter-spacing: 1px;
-
-  --color-primary: #44F1A6;
-  --color-secondary: #047946;
-  padding-bottom: 0;
+  background-color: #E4F1E0;  
+  padding-left: 285px;
+  font-family: 'Cunia';
 }
 
 * {
@@ -28,101 +21,36 @@ body {
       height: 100%;
       top: 0;
       left: 0;
-      background: rgba(0,0,0,0.5) url(/loading.gif) no-repeat center;
-      background-size: 40vw;
+      background: rgba(14,26,22,0.8) url(/loading.svg) no-repeat center;
+      background-size: 300px;
+      backdrop-filter: blur(5px);
       position: fixed;
+      z-index: 9;
   }
 }
 
-.tier.basic {
-  &::before {
-    background-image: url(/basic.png);
-  }
-  &.selected::before {
-    background-image: url(/basic-selected.png);
-  }
+.bn-onboard-custom.bn-onboard-modal {
+  z-index: 999;
+  background: rgba(14,26,22,0.8);
+  backdrop-filter: blur(5px);
 }
 
-.tier.light {
-  &::before {
-    background-image: url(/light.png);
-  }
-  &.selected::before {
-    background-image: url(/light-selected.png);
-  }
+.bn-onboard-custom.bn-onboard-dark-mode.bn-onboard-modal-content {
+  width: 30em;
+  background-color: #448C89;
 }
 
-.tier.pro {
-  &::before {
-    background-image: url(/pro.png);
-  }
-  &.selected::before {
-    background-image: url(/pro-selected.png);
-  }
+.bn-onboard-custom.bn-onboard-dark-mode-background-hover:hover, .bn-onboard-custom.bn-onboard-dark-mode-background {
+  background: #28615f !important;
 }
 
-header .Dropdown-root {
-  min-width: 10em;
-  .Dropdown-control {
-    background-color: transparent;
-    background-repeat: no-repeat;
-    background-size: 24px;
-    background-position: 4px center;
-    border: 1px solid var(--color-secondary);
-    border-radius: 1em;
-    color: white;
-    cursor: pointer;
-    padding: 10px 36px;
-    .Dropdown-arrow {
-      top: 18px;
-      border-top-color: var(--color-secondary);
-    }
-  }
-  &.is-open {
-    .Dropdown-control {
-      border-bottom: 0;
-      border-bottom-left-radius: 0;
-      border-bottom-right-radius: 0;
-      color: rgb(255,255,255,0.5);
-    }
-    .Dropdown-arrow {
-      border-bottom-color: var(--color-secondary);
-    } 
-  }
-  &.bsc .Dropdown-control {
-    background-image: url(/bsc.png);
-  }
-  &.avx .Dropdown-control {
-    background-image: url(/avx.png);
-  }
-  &.ftm .Dropdown-control {
-    background-image: url(/ftm.png);
-  }
-  .Dropdown-menu {
-    background-color: transparent;
-    border: 1px solid var(--color-secondary);
-    border-top: 0;
-    border-radius: 0 0 1em 1em;
-    box-shadow: none;
-  }
-  .Dropdown-option {
-    color: white;
-    padding-left: 36px;
-    background-repeat: no-repeat;
-    background-size: 24px;
-    background-position: 4px center;
-    &:hover, &.is-selected {
-      color: var(--color-primary);
-      background-color: rgb(255,255,255,0.2);
-    }
-    &.bsc {
-      background-image: url(/bsc.png);
-    }
-    &.ftm {
-      background-image: url(/ftm.png);
-    }
-    &.avx {
-      background-image: url(/avx.png);
-    }
-  }
+.bn-onboard-custom.bn-onboard-modal-content-close {
+  width: 2em;
+  height: 2em;
+}
+.bn-onboard-custom.bn-onboard-dark-mode-close-background:hover {
+  background-color: #28615f !important;
+}
+.bn-onboard-custom.bn-onboard-select-info-container span {
+  color: white !important;
 }

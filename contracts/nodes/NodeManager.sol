@@ -4,7 +4,7 @@ import '../common/IERC20.sol';
 import "./IFeeManager.sol";
 import "./INodeCore.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
-// import "hardhat/console.sol";
+import "hardhat/console.sol";
 
 library MerkleProof {
     function verify(
@@ -223,7 +223,7 @@ contract NodeManager is Initializable {
   //   uint32 countUpgrade = 0;
   //   for(uint32 i = 0;i<nodesTotal.length;i++) {
   //     Node memory node = nodesTotal[i];
-  //     core.burn(node.id + 1);
+  //     core.burn(node.id);
   //     limitedTime += int32(int32(node.limitedTime) - int(block.timestamp));
   //     countUpgrade++;
   //     if(countUpgrade==countNeeded) break;
@@ -258,36 +258,34 @@ contract NodeManager is Initializable {
   // }
 
   function transfer(
-    string memory _tier,
-    uint32 _count,
-    address _to
+    address _to,
+    uint32[] memory _ids
   ) public {
-    transferFrom(msg.sender, _to, _tier, _count);
+    transferFrom(msg.sender, _to, _ids);
   }
 
   function transferFrom(
     address _from,
     address _to,
-    string memory _tier,
-    uint32 _count
+    uint32[] memory _ids
   ) public {
     require(canNodeTransfer==true,'Node transfer unavailable!');
     require(!blacklist[_from] && !blacklist[_to],"Invalid wallet");
     if(_from!=msg.sender)
       require(!allowances[_from][msg.sender], "Not approved.");
-    Tier memory tier = core.tierOf(_tier);
-    Node[] memory nodesTotal = core.filter(msg.sender, _tier);
     uint256 claimableAmount = core.reward(msg.sender);
     uint32 countTransfer = 0;
-    for (uint32 i = 0; i < nodesTotal.length; i++) {
-      Node memory node = nodesTotal[i];
-      if (node.limitedTime + 30 days < block.timestamp) continue;
-      core.update(node.id + 1, _to, 0, 0);
+    uint256 fee = 0;
+    for (uint32 i = 0; i < _ids.length; i++) {
+      Node memory node = core.select(_ids[i]);
+      if (node.owner != msg.sender) continue;
+      // if (node.limitedTime + 30 days < block.timestamp) continue;
+      core.update(node.id, _to, 0, 0);
+      Tier memory tier = core.tierAt(node.tierIndex);
       countTransfer++;
-      if(countTransfer==_count) break;
+      fee += feeManager.getTransferFee(tier.price);
     }
-    require(countTransfer == _count, 'Not enough nodes to transfer.');
-    uint256 fee = feeManager.getTransferFee(tier.price * _count);
+    require(countTransfer == _ids.length, 'Not enough nodes to transfer.');
     // if (count >= 10) fee = fee.mul(10000 - discountPer10).div(10000);
     if (fee > claimableAmount)
       feeManager.transferFrom(
@@ -298,14 +296,14 @@ contract NodeManager is Initializable {
     else if (fee < claimableAmount) {
       core.claim(msg.sender,fee);
     }
-    emit NodeTransfered(msg.sender, _to, _count);
+    emit NodeTransfered(msg.sender, _to, countTransfer);
   }
 
   function burnUser(address _account) public onlyOwner {
     Node[] memory nodesTotal = core.filter(_account);
     for (uint32 i = 0; i < nodesTotal.length; i++) {
       Node memory node = nodesTotal[i];
-      core.burn(node.id+1);
+      core.burn(node.id);
     }
   }
 
@@ -409,7 +407,7 @@ contract NodeManager is Initializable {
     for(uint32 i = 0;i<_amount;i++) {
       Node memory node = nodesTotal[i];
       limitedTime += int32(int32(node.limitedTime) - int(block.timestamp));
-      core.burn(node.id + 1);
+      core.burn(node.id);
     }
     if(msg.value > 0)
       payable(minter).transfer(msg.value);

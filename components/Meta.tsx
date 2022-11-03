@@ -4,7 +4,7 @@ import Head from "next/head"; // HTML Head
 const url: string = process.env.NEXT_PUBLIC_URL ?? "https://token.com/";
 const tokenName: string = process.env.NEXT_PUBLIC_TOKEN_NAME ?? "Token Name";
 const description: string =
-  process.env.NEXT_PUBLIC_DESCRIPTION ?? "NodeGrid $NGRID Token - You can use this app to create NodeGrid nodes, view, claim and compound rewards.";
+  process.env.NEXT_PUBLIC_DESCRIPTION ?? "PowNodes - You can use this app to create POW nodes, view, claim and compound rewards.";
 
 export default function Meta() {
   return (
@@ -41,7 +41,9 @@ export default function Meta() {
       <meta property="twitter:image" content={`${url}meta.png`} />
 
       {/* Favicon */}
-      <link rel="shortcut icon" href="/favicon.ico" />
+      <link rel="shortcut icon" href="/node.png" />
+
+      {/* <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script> */}
     </Head>
   );
 }
